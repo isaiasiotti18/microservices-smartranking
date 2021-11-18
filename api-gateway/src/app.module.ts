@@ -6,12 +6,14 @@ import { ProxyRMQModule } from './modules/proxyrmq/proxyrmq.module';
 import { AwsModule } from './modules/aws/aws.module';
 import { AwsService } from './modules/aws/aws.service';
 import { ConfigModule } from '@nestjs/config';
+import { DesafiosModule } from './modules/desafios/desafios.module';
 
 @Module({
   imports: [
     CategoriasModule,
     JogadoresModule, 
-    ProxyRMQModule, 
+    DesafiosModule,
+    ProxyRMQModule,
     AwsModule,
     ConfigModule.forRoot({ isGlobal: true })
   ],

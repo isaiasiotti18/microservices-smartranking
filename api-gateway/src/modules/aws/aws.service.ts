@@ -37,7 +37,7 @@ export class AwsService {
       .putObject(params)
       .promise()
       .then(data => { return {
-        url: `https://smartrankingbucket.s3.amazonaws.com/${urlKey}`
+        url: `https://${AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${urlKey}`
       }})
       .catch(error => { 
         this.logger.error(error) 

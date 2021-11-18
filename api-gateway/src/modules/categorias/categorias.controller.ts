@@ -13,44 +13,30 @@ export class CategoriasController {
     private clientProxySmartRanking: ClientProxySmartRanking
   ) {}
 
-  /*
-  private clientAdminBackend: ClientProxy
-  constructor() {
-    this.clientAdminBackend = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: ['amqp://user:q7W2UQk249gR@18.210.17.173:5672/smartranking'],
-        queue: 'admin-backend'
-      }
-    })
-  }
-  */
-
   private clientAdminBackend = 
-              this.clientProxySmartRanking.getClientProxyAdminBackendInstance()
+    this.clientProxySmartRanking.getClientProxyAdminBackendInstance()
 
   @Post()
   @UsePipes(ValidationPipe)
   criarCategoria(
-    @Body() criarCategoriaDto: CriarCategoriaDto){
-
-      this.clientAdminBackend.emit('criar-categoria', criarCategoriaDto)
-
+    @Body() criarCategoriaDto: CriarCategoriaDto
+  ) {
+    this.clientAdminBackend.emit('criar-categoria', criarCategoriaDto)
   }
 
   @Get()
   consultarCategorias(@Query('idCategoria') _id: string): Observable<any> {
-
     return this.clientAdminBackend.send('consultar-categorias', _id ? _id : '')
-
   }
 
   @Put('/:_id')
   @UsePipes(ValidationPipe)    
-  atualizarCategoria(@Body() atualizarCategoriaDto: AtualizarCategoriaDto,
-         @Param('_id') _id: string) {
-          this.clientAdminBackend.emit('atualizar-categoria', 
-          { id: _id, categoria: atualizarCategoriaDto }) 
-         }    
+  atualizarCategoria(
+    @Body() atualizarCategoriaDto: AtualizarCategoriaDto,
+    @Param('_id') _id: string
+  ) {
+    this.clientAdminBackend.emit('atualizar-categoria', 
+    { id: _id, categoria: atualizarCategoriaDto }) 
+  }    
 
 }
