@@ -78,13 +78,23 @@ export class RankingsService {
         this.logger.log(`dataRef: ${dataRef}`);
       }
 
+      // Registros de partidas processadas,
+      // filtrando a categoria recebida
       const registroRankings = await this.desafioModel
         .find()
         .where('categoria')
         .equals(idCategoria)
         .exec();
+
+      /*
+       Recuperar todos os desafios com data menor ou igual à
+       data que recebemos na requisição, somente iremos recuperar desafios 
+       com status 'REALIZADO' e filtrando a categoria
+       */
+      const desafios: Desafio[] = [];
+
+      return;
       this.logger.log(`registroRankings: ${registroRankings}`);
-    } catch (error) {
       this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }
