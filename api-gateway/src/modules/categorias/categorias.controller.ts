@@ -1,7 +1,18 @@
-import { Controller, Get, Logger, Post, UsePipes, ValidationPipe, Body, Query, Put, Param } from '@nestjs/common';
+import { 
+  Controller, 
+  Get, 
+  Logger, 
+  Post, 
+  UsePipes, 
+  ValidationPipe, 
+  Body, 
+  Query, 
+  Put, 
+  Param 
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
 import { CriarCategoriaDto } from './dtos/criar-categoria.dto';
 import { AtualizarCategoriaDto } from './dtos/atualizar-categoria.dto'
-import { Observable } from 'rxjs';
 import { ClientProxySmartRanking } from '../proxyrmq/client-proxy'
 
 @Controller('api/v1/categorias')

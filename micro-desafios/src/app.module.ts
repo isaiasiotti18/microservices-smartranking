@@ -8,13 +8,7 @@ import { ProxyRMQModule } from './modules/proxyrmq/proxyrmq.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://admin:dmlZVk61MXcvqjed@cluster.rpaax.mongodb.net/desafiosdb?retryWrites=true&w=majority',
-      {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-      },
+      'mongodb+srv://admin:dmlZVk61MXcvqjed@cluster.rpaax.mongodb.net/databasemicroservicesdesafios?retryWrites=true&w=majority',
     ),
     ConfigModule.forRoot({ isGlobal: true }),
     DesafiosModule,

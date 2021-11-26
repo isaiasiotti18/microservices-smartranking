@@ -1,4 +1,14 @@
-import { Controller, Post, UsePipes, ValidationPipe, Body, Get, Query, Put, Param, Delete, Logger, BadRequestException } from '@nestjs/common';
+import { 
+  Controller, 
+  Post, 
+  UsePipes, 
+  ValidationPipe, 
+  Body, 
+  Get, 
+  Query, 
+  Put, Param, Delete, Logger, BadRequestException 
+} from '@nestjs/common';
+
 import { CriarDesafioDto } from './dtos/criar-desafio.dto'
 import { DesafioStatusValidacaoPipe } from './pipes/desafio-status-validation.pipe';
 import { AtribuirDesafioPartidaDto } from './dtos/atribuir-desafio-partida.dto';
@@ -42,7 +52,8 @@ export class DesafiosController {
       await this.clientAdminBackend.send('consultar-jogadores', '').toPromise()                  
 
     criarDesafioDto.jogadores.map(jogadorDto => {
-      const jogadorFilter: Jogador[] = jogadores.filter( jogador => jogador._id == jogadorDto._id )
+      const jogadorFilter: Jogador[] = 
+        jogadores.filter(jogador => jogador._id == jogadorDto._id )
 
       this.logger.log(`jogadorFilter: ${JSON.stringify(jogadorFilter)}`)  
 
@@ -153,10 +164,15 @@ export class DesafiosController {
     Somente podem ser atualizados desafios com status PENDENTE
     */
     if (desafio.status != DesafioStatus.PENDENTE) {
-      throw new BadRequestException ('Somente desafios com status PENDENTE podem ser atualizados!')
+      throw new BadRequestException (
+        'Somente desafios com status PENDENTE podem ser atualizados!'
+      )
     }
       
-    await this.clientDesafios.emit('atualizar-desafio', { id: _id, desafio: atualizarDesafioDto } )  
+    await this.clientDesafios.emit(
+      'atualizar-desafio', 
+      { id: _id, desafio: atualizarDesafioDto } 
+    )  
   }    
           
   @Post('/:desafio/partida/')
@@ -164,7 +180,8 @@ export class DesafiosController {
     @Body(ValidationPipe) atribuirDesafioPartidaDto: AtribuirDesafioPartidaDto,
     @Param('desafio') _id: string
   ) {
-    const desafio: Desafio = await this.clientDesafios.send(
+    const desafio: Desafio = 
+      await this.clientDesafios.send(
         'consultar-desafios', 
         { idJogador: '', _id: _id }
       ).toPromise()
@@ -199,7 +216,9 @@ export class DesafiosController {
     Verificamos se o jogador informado faz parte do desafio
     */
     if (!desafio.jogadores.includes(atribuirDesafioPartidaDto.def)) {
-      throw new BadRequestException(`O jogador vencedor da partida deve fazer parte do desafio!`)
+      throw new BadRequestException(
+        `O jogador vencedor da partida deve fazer parte do desafio!`
+      )
     }
     
     /*

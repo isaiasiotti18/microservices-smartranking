@@ -7,6 +7,7 @@ import { AwsModule } from './modules/aws/aws.module';
 import { AwsService } from './modules/aws/aws.service';
 import { ConfigModule } from '@nestjs/config';
 import { DesafiosModule } from './modules/desafios/desafios.module';
+import { RankingsModule } from './modules/rankings/rankings.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { DesafiosModule } from './modules/desafios/desafios.module';
     DesafiosModule,
     ProxyRMQModule,
     AwsModule,
-    ConfigModule.forRoot({ isGlobal: true })
+    ConfigModule.forRoot({ isGlobal: true }),
+    RankingsModule
   ],
   controllers: [],
   providers: [ClientProxySmartRanking, AwsService],

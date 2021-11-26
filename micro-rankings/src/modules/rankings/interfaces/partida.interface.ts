@@ -1,6 +1,4 @@
-import { Document } from 'mongoose';
-
-export interface Partida extends Document {
+export interface Partida {
   categoria: string;
   desafio: string;
   jogadores: string[];
