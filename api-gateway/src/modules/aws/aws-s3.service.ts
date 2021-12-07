@@ -3,9 +3,9 @@ import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class AwsService {
+export class AwsS3Service {
 
-  private logger = new Logger(AwsService.name)
+  private logger = new Logger(AwsS3Service.name)
 
   constructor(private configService: ConfigService) {}
 

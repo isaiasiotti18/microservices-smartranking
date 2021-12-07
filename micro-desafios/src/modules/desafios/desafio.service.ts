@@ -1,15 +1,22 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Desafio } from './interfaces/desafio.interface';
 import { Model } from 'mongoose';
 import { DesafioStatus } from './interfaces/desafio-status.enum';
 import { RpcException } from '@nestjs/microservices';
+import * as momentTimezone from 'moment-timezone';
+import { ClientProxySmartRanking } from '../proxyrmq/client-proxy';
 
 @Injectable()
 export class DesafiosService {
   constructor(
     @InjectModel('Desafio') private readonly desafioModel: Model<Desafio>,
+    private clientProxySmartRanking: ClientProxySmartRanking,
   ) {}
+
+  private clientNotificacoesBackend =
+    this.clientProxySmartRanking.getClientProxyNotificacoesInstance();
 
   private readonly logger = new Logger(DesafiosService.name);
 
@@ -23,7 +30,11 @@ export class DesafiosService {
       */
       desafioCriado.status = DesafioStatus.PENDENTE;
       this.logger.log(`desafioCriado: ${JSON.stringify(desafioCriado)}`);
-      return await desafioCriado.save();
+      await desafioCriado.save();
+
+      return await this.clientNotificacoesBackend
+        .emit('notificacao-novo-desafio', desafio)
+        .toPromise();
     } catch (error) {
       this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
@@ -51,6 +62,48 @@ export class DesafiosService {
   async consultarDesafioPeloId(_id: any): Promise<Desafio> {
     try {
       return await this.desafioModel.findOne({ _id }).exec();
+    } catch (error) {
+      this.logger.error(`error: ${JSON.stringify(error.message)}`);
+      throw new RpcException(error.message);
+    }
+  }
+
+  async consultarDesafiosRealizados(idCategoria: string): Promise<Desafio[]> {
+    try {
+      return await this.desafioModel
+        .find()
+        .where('categoria')
+        .equals(idCategoria)
+        .where('status')
+        .equals(DesafioStatus.REALIZADO)
+        .exec();
+    } catch (error) {
+      this.logger.error(`error: ${JSON.stringify(error.message)}`);
+      throw new RpcException(error.message);
+    }
+  }
+
+  async consultarDesafiosRealizadosPelaData(
+    idCategoria: string,
+    dataRef: string,
+  ): Promise<Desafio[]> {
+    try {
+      const dataRefNew = `${dataRef} 23:59:59.999`;
+
+      return await this.desafioModel
+        .find()
+        .where('categoria')
+        .equals(idCategoria)
+        .where('status')
+        .equals(DesafioStatus.REALIZADO)
+        .where('dataHoraDesafio')
+        .lte(
+          // @ts-ignore
+          momentTimezone(dataRefNew)
+            .tz('UTC')
+            .format('YYYY-MM-DD HH:mm:ss.SSS+00:00'),
+        )
+        .exec();
     } catch (error) {
       this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);

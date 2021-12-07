@@ -7,8 +7,13 @@ import { Ranking } from './interfaces/ranking.schema';
 import { ClientProxySmartRanking } from '../proxyrmq/client-proxy';
 import { Categoria } from './interfaces/categoria.interface';
 import { EventoNome } from './evento-nome.enum';
-import { RankingResponse } from './interfaces/ranking-response.interface';
+import {
+  Historico,
+  RankingResponse,
+} from './interfaces/ranking-response.interface';
 import * as momentTimezone from 'moment-timezone';
+import { Desafio } from './interfaces/desafio.interface';
+import * as _ from 'lodash';
 
 @Injectable()
 export class RankingsService {
@@ -22,6 +27,9 @@ export class RankingsService {
 
   private clientAdminBackend =
     this.clientProxySmartRanking.getClientProxyAdminBackendInstance();
+
+  private clientDesafiosBackend =
+    this.clientProxySmartRanking.getClientProxyDesafiosInstance();
 
   async processarPartida(idPartida: string, partida: Partida): Promise<void> {
     try {
@@ -67,7 +75,7 @@ export class RankingsService {
   }
 
   async consultarRankings(
-    idCategoria: string,
+    idCategoria: any,
     dataRef: string,
   ): Promise<RankingResponse[]> {
     try {
@@ -78,8 +86,10 @@ export class RankingsService {
         this.logger.log(`dataRef: ${dataRef}`);
       }
 
-      // Registros de partidas processadas,
-      // filtrando a categoria recebida
+      /*
+       Registros de partidas processadas,
+       filtrando a categoria recebida
+      */
       const registroRankings = await this.desafioModel
         .find()
         .where('categoria')
@@ -88,13 +98,69 @@ export class RankingsService {
 
       /*
        Recuperar todos os desafios com data menor ou igual à
-       data que recebemos na requisição, somente iremos recuperar desafios 
-       com status 'REALIZADO' e filtrando a categoria
-       */
-      const desafios: Desafio[] = [];
+       data que recebemos na requisição,
+       somente iremos recuperar desafios com status 'REALIZADO' e
+       filtrando a
+      */
+      const desafios: Desafio[] = await this.clientDesafiosBackend
+        .send('consultar-desafios-realizados', {
+          idCategoria: idCategoria,
+          dataRef: dataRef,
+        })
+        .toPromise();
 
-      return;
-      this.logger.log(`registroRankings: ${registroRankings}`);
+      /**
+       Um loop no registros que recuperamos do ranking (partida processadas)
+       descartando os registros (com base no id do desafio) que não retornaram no
+       objeto desafios
+      */
+      _.remove(registroRankings, function (item) {
+        return (
+          desafios.filter((desafio) => desafio._id == item.desafio).length == 0
+        );
+      });
+
+      this.logger.log(`registrorRankingsNovo: ${registroRankings}`);
+
+      /*
+       Agrupar por jogador
+      */
+      const resultado = _(registroRankings)
+        .groupBy('jogador')
+        .map((items, key) => ({
+          jogador: key,
+          historico: _.countBy(items, 'evento'),
+          pontos: _.sumBy(items, 'pontos'),
+        }))
+        .value();
+
+      const resultadoOrdenado = _.orderBy(resultado, 'pontos', 'desc');
+
+      this.logger.log(`resultado: ${JSON.stringify(resultadoOrdenado)}`);
+
+      const rankingResponseList: RankingResponse[] = [];
+
+      resultadoOrdenado.map((item, index) => {
+        const rankingResponse: RankingResponse = {};
+        rankingResponse.jogador = item.jogador;
+        rankingResponse.posicao = index + 1;
+        rankingResponse.pontuacao = item.pontos;
+
+        const historico: Historico = {};
+        historico.vitorias = item.historico.VITORIA
+          ? item.historico.VITORIA
+          : 0;
+        historico.derrotas = item.historico.DERROTA
+          ? item.historico.DERROTA
+          : 0;
+
+        rankingResponse.historicoPartida = historico;
+
+        rankingResponseList.push(rankingResponse);
+      });
+
+      return rankingResponseList;
+    } catch (error) {
       this.logger.error(`error: ${JSON.stringify(error.message)}`);
       throw new RpcException(error.message);
     }

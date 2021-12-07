@@ -1,15 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as momentTimezone from 'moment-timezone';
+import { ConfigService } from '@nestjs/config';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
+const configService = new ConfigService();
+
+const RABBITMQ_USER = configService.get<string>('RABBITMQ_USER');
+const RABBITMQ_PASSWORD = configService.get<string>('RABBITMQ_PASSWORD');
+const RABBITMQ_URL = configService.get<string>('RABBITMQ_URL');
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.RMQ,
+      options: {
+        urls: [`amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_URL}`],
+        noAck: false,
+        queue: 'notificacoes',
+      },
+    },
+  );
 
-  Date.prototype.toJSON = function (): any {
-    return momentTimezone(this)
-      .tz('America/Sao_Paulo')
-      .format('YYYY-MM-DD HH:mm:ss.SSS');
-  };
+  await app.listen();
 }
 bootstrap();

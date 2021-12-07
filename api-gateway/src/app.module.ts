@@ -4,10 +4,11 @@ import { JogadoresModule } from './modules/jogadores/jogadores.module';
 import { ClientProxySmartRanking } from './modules/proxyrmq/client-proxy'
 import { ProxyRMQModule } from './modules/proxyrmq/proxyrmq.module';
 import { AwsModule } from './modules/aws/aws.module';
-import { AwsService } from './modules/aws/aws.service';
+import { AwsS3Service } from './modules/aws/aws-s3.service';
 import { ConfigModule } from '@nestjs/config';
 import { DesafiosModule } from './modules/desafios/desafios.module';
 import { RankingsModule } from './modules/rankings/rankings.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -17,9 +18,10 @@ import { RankingsModule } from './modules/rankings/rankings.module';
     ProxyRMQModule,
     AwsModule,
     ConfigModule.forRoot({ isGlobal: true }),
-    RankingsModule
+    RankingsModule,
+    AuthModule
   ],
   controllers: [],
-  providers: [ClientProxySmartRanking, AwsService],
+  providers: [ClientProxySmartRanking, AwsS3Service],
 })
 export class AppModule {}
