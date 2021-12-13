@@ -69,6 +69,7 @@ $ npm run dev:server
 
 ### Aviso importante!
 <p>Será necessário algumas configurações: </p>
+
 - Variáveis de ambiente, cada micro possui suas variaveis, porém são quase tudo iguais, só no api-gateway que possui mais
   - Api-gateway
     - AWS_S3_BUCKET_NAME
