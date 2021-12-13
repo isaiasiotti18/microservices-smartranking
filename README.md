@@ -47,20 +47,24 @@ Além disto é bom ter um editor para trabalhar com o código como [VSCode](http
 
 ### 🎲 Rodando o Back End (servidor)
 
-<p>Primeiro faça um clone desse repositório</p>
+```bash
+# Primeiro faça um clone desse repositório
 $ git clone <https://github.com/isaiasiotti18/microservices-smartranking>
 
-<p>Acesse cada pasta do projeto e rode o npm</p>
+# Acesse cada pasta do projeto
 - api-gateway
 - micro-admin-backend
 - micro-desafios
 - micro-notificacoes
 - micro-rankings
   
-<p>E rode o npm install para instalar todas as dependências necessárias</p>
+# Rode o npm install para instalar todas as dependências necessárias
 $ npm install
 
-<p>Execute a aplicação em modo de desenvolvimento</p>
+# Execute a aplicação em modo de desenvolvimento
 $ npm run dev:server
+
+# O servidor inciará na porta:8080 - acesse <http://localhost:8080> 
+```
 
 
