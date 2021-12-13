@@ -12,30 +12,30 @@
 
 ### Features
 
-- [] Usuários
+- [x] Usuários
   - Criar novos usuários
   - Consultar
     - Todos os usuários
     - Por Id
   - Atualização
   - Exclusão
-- [] Categorias (Cada usuário possui sua categoris/nível)
+- [x] Categorias (Cada usuário possui sua categoris/nível)
   - Criação de novas categorias
   - Consultar
     - Todas as categorias
     - Por Id
   - Atualização
   - Exclusão
-- [] Desafios
+- [x] Desafios
   - Consultar todos os desafios
   - Consulta de desafios realizados
     - Por data
     - Por categoria
     - Atualização do Status do desafio
     - Exclusão
-- [] Partidas
+- [x] Partidas
   - Toda partida é criada dentro de desafios
-- [] Rankings
+- [x] Rankings
   - Processar partida
   - Consultar Rankings
 
@@ -62,7 +62,5 @@ $ npm install
 
 <p>Execute a aplicação em modo de desenvolvimento</p>
 $ npm run dev:server
-
-
 
 
