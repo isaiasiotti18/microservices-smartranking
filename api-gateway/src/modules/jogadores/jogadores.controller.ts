@@ -23,6 +23,7 @@ export class JogadoresController {
     return await this.jogadoresService.uploadArquivo(file, _id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @UsePipes(ValidationPipe)
   async criarJogador(
