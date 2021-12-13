@@ -25,6 +25,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [AWS Bitnami](https://aws.bitnami.com/)
 - RabbitMQ](https://www.rabbitmq.com/)
 - [SAP Cloud Platform](https://www.sap.com/brazil/products/cloud-platform.html)
+- [Gitlab para CI](https://www.gitlab.com)
 
 ### Features
 
