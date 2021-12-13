@@ -70,19 +70,29 @@ $ npm run dev:server
 ### Aviso importante!
 #### Será necessário algumas configurações:
 
-- Variáveis de ambiente, cada micro possui suas variaveis, porém são quase tudo iguais, só no api-gateway que possui mais
-  - Api-gateway
-    - AWS_S3_BUCKET_NAME
-    - AWS_REGION
-    - AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY
-    - COGNITO_USER_POOL_ID
-    - COGNITO_CLIENT_ID
-    - RABBITMQ_USER
-    - RABBITMQ_PASSWORD
-    - RABBITMQ_URL
-  - Os demais microservices
-    - RABBITMQ_USER
-    - RABBITMQ_PASSWORD
-    - RABBITMQ_URL
+#### Variáveis de ambiente, cada micro possui suas variaveis, porém são quase tudo iguais, só no api-gateway que possui mais
+- Api-gateway
+  - AWS_S3_BUCKET_NAME
+  - AWS_REGION
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - COGNITO_USER_POOL_ID
+  - COGNITO_CLIENT_ID
+  - RABBITMQ_USER
+  - RABBITMQ_PASSWORD
+  - RABBITMQ_URL
+- Os demais microservices
+  - RABBITMQ_USER
+  - RABBITMQ_PASSWORD
+  - RABBITMQ_URL
+
+#### Também será preciso configurar os serviços na Aws
+  - IAM
+  - EC2 (Criar a virtual machine com o Rabbitmq usando a Bitnami)
+  - S3
+  - Cognito
+  
+#### O Deploy da Api
+  - SAP Cloud platform
+  - CI com Gitlab
 
