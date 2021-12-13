@@ -23,7 +23,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
   - Cognito
   - S3 Bucket
 - [AWS Bitnami](https://aws.bitnami.com/)
-- RabbitMQ(https://www.rabbitmq.com/)
+- RabbitMQ](https://www.rabbitmq.com/)
 - [SAP Cloud Platform](https://www.sap.com/brazil/products/cloud-platform.html)
 
 ### Features
@@ -87,7 +87,7 @@ $ npm run dev:server
 #### Será necessário algumas configurações:
 
 #### Variáveis de ambiente, cada micro possui suas variaveis, porém são quase tudo iguais, só no api-gateway que possui mais
-- Api-gateway
+- **Api-gateway**
   - AWS_S3_BUCKET_NAME
   - AWS_REGION
   - AWS_ACCESS_KEY_ID
@@ -97,7 +97,7 @@ $ npm run dev:server
   - RABBITMQ_USER
   - RABBITMQ_PASSWORD
   - RABBITMQ_URL
-- Os demais microservices
+- **Os demais microservices**
   - RABBITMQ_USER
   - RABBITMQ_PASSWORD
   - RABBITMQ_URL
@@ -112,3 +112,11 @@ $ npm run dev:server
   - SAP Cloud platform
   - CI com Gitlab
 
+### Autor
+
+Github - [isaiasiotti18](https://www.github.com/isaiasiotti)
+Linkedin - [Isaias Santos](https://www.linkedin.com/in/isaiasiotti)
+
+### Feito com <3 por mim, Entre em contato!
+
+[MIT licensed](LICENSE).
