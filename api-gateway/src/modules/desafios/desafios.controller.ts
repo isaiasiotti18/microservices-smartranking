@@ -6,7 +6,7 @@ import {
   Body, 
   Get, 
   Query, 
-  Put, Param, Delete,
+  Put, Param, Delete, UseGuards,
 } from '@nestjs/common';
 
 import { CriarDesafioDto } from './dtos/criar-desafio.dto'
@@ -14,6 +14,7 @@ import { DesafioStatusValidacaoPipe } from './pipes/desafio-status-validation.pi
 import { AtribuirDesafioPartidaDto } from './dtos/atribuir-desafio-partida.dto';
 import { AtualizarDesafioDto } from './dtos/atualizar-desafio.dto';
 import { DesafiosService } from './desafios.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('api/v1/desafios')
 export class DesafiosController {
@@ -21,6 +22,7 @@ export class DesafiosController {
     private desafiosService: DesafiosService
   ) {}
     
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @UsePipes(ValidationPipe)
   async criarDesafio(
@@ -28,14 +30,16 @@ export class DesafiosController {
   ) {
     await this.desafiosService.criarDesafio(criarDesafioDto)
   }
-      
+    
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async consultarDesafios(
     @Query('idJogador') idJogador: string
   ): Promise<any> {
     return await this.desafiosService.consultarDesafios(idJogador)
   }
-        
+
+  @UseGuards(AuthGuard('jwt'))      
   @Put('/:desafio')
   async atualizarDesafio(
     @Body(DesafioStatusValidacaoPipe) atualizarDesafioDto: AtualizarDesafioDto,
@@ -44,7 +48,8 @@ export class DesafiosController {
     this.desafiosService.atualizarDesafio(atualizarDesafioDto, _id);
   }
     
-          
+       
+  @UseGuards(AuthGuard('jwt'))
   @Post('/:desafio/partida/')
   async atribuirDesafioPartida(
     @Body(ValidationPipe) atribuirDesafioPartidaDto: AtribuirDesafioPartidaDto,
@@ -56,6 +61,7 @@ export class DesafiosController {
     );
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:_id')
   async deletarDesafio(@Param('_id') _id: string) {
     await this.desafiosService.deletarDesafio(_id);

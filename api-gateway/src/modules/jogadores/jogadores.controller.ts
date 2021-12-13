@@ -14,6 +14,7 @@ export class JogadoresController {
   
   constructor(private jogadoresService: JogadoresService) {}
   
+  @UseGuards(AuthGuard('jwt'))
   @Post('/:_id/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadArquivo(
@@ -22,8 +23,7 @@ export class JogadoresController {
   ) {
     return await this.jogadoresService.uploadArquivo(file, _id);
   }
-
-  @UseGuards(AuthGuard('jwt'))
+  
   @Post()
   @UsePipes(ValidationPipe)
   async criarJogador(
@@ -51,6 +51,7 @@ export class JogadoresController {
     await this.jogadoresService.atualizarJogador(atualizarJogadorDto, _id);
   }
       
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:_id')
   async deletarJogador(
     @Param('_id', ValidacaoParametrosPipe) _id: string

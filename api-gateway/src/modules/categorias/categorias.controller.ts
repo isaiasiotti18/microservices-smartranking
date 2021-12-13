@@ -8,27 +8,22 @@ import {
   Body, 
   Query, 
   Put, 
-  Param 
+  Param, 
+  UseGuards
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { CriarCategoriaDto } from './dtos/criar-categoria.dto';
 import { AtualizarCategoriaDto } from './dtos/atualizar-categoria.dto'
-import { ClientProxySmartRanking } from '../proxyrmq/client-proxy'
 import { CategoriasService } from './categorias.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('api/v1/categorias')
 export class CategoriasController {
 
-  private logger = new Logger(CategoriasController.name)
-
   constructor(
-    private clientProxySmartRanking: ClientProxySmartRanking,
     private categoriasService: CategoriasService
   ) {}
 
-  private clientAdminBackend = 
-    this.clientProxySmartRanking.getClientProxyAdminBackendInstance()
-
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @UsePipes(ValidationPipe)
   criarCategoria(
@@ -37,17 +32,19 @@ export class CategoriasController {
     this.categoriasService.criarCategoria(criarCategoriaDto)
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  async consultarCategorias(@Query('idCategoria') _id: string) {
+  async consultarCategorias(@Query('idCategoria') _id: string): Promise<any> {
     return await this.categoriasService.consultarCategorias(_id)
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put('/:_id')
   @UsePipes(ValidationPipe)    
   atualizarCategoria(
     @Body() atualizarCategoriaDto: AtualizarCategoriaDto,
     @Param('_id') _id: string
-  ) {
+  ): void {
     this.categoriasService.atualizarCategoria(
       atualizarCategoriaDto, 
       _id
