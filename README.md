@@ -67,4 +67,8 @@ $ npm run dev:server
 # O servidor inciará na porta:8080 - acesse <http://localhost:8080> 
 ```
 
+### Aviso importante!
+<p>Será necessário algumas configurações: </p>
+- Variáveis de ambiente
+- Console 
 
