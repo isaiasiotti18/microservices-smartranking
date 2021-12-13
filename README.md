@@ -10,6 +10,22 @@
 [![Minimum node.js version](https://badgen.net/npm/node/express)](https://npmjs.com/package/express)
 [![GitHub license](https://img.shields.io/github/license/isaiasiotti18/microservices-smartranking)](https://github.com/isaiasiotti18/microservices-smartranking/blob/master/LICENSE.md)
 
+### 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [Node.Js](https://nodejs.org/en/)
+- [Typescript](https://www.typescriptlang.org/)
+- [NestJs](https://www.nestjs.com/)
+- [Cloud MongoDB](https://cloud.mongodb.com/)
+- [Amazon Web Services](aws.amazon.com)
+  - EC2
+  - Cognito
+  - S3 Bucket
+- [AWS Bitnami](https://aws.bitnami.com/)
+- RabbitMQ(https://www.rabbitmq.com/)
+- [SAP Cloud Platform](https://www.sap.com/brazil/products/cloud-platform.html)
+
 ### Features
 
 - [x] Usuários
