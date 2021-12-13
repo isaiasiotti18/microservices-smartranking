@@ -68,7 +68,7 @@ $ npm run dev:server
 ```
 
 ### Aviso importante!
-<p>Será necessário algumas configurações: </p>
+#### Será necessário algumas configurações:
 
 - Variáveis de ambiente, cada micro possui suas variaveis, porém são quase tudo iguais, só no api-gateway que possui mais
   - Api-gateway
